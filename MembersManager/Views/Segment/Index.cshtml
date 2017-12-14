@@ -1,0 +1,80 @@
+﻿@model MembersManager.Models.ProfileViewModel
+@{
+    ViewBag.Title = "My Segments";
+}
+
+<div class="btn-group float-right"> <a class="btn btn-secondary" href="create-new-segment.html" title="edit"><i class="fa fa-fw fa-pencil"></i></a><a class="btn btn-secondary" href="#" title="delete"><i class="fa fa-trash-o"> </i></a></div>
+<h1>Segment name </h1>
+<div class="card card-condition">
+    <div class="card-header">Conditions</div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => Model.SelectColumn, Model.AllColumnSelectList, "---Choose Column---", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4">                         
+                        @Html.DropDownListFor(m => Model.SelectFilter, Model.AllFilterSelectList, "---Choose Operator---", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control form-control-sm" id="SearchTerm" name="SearchTerm" type="text" aria-describedby="nameHelp" placeholder="" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <button class="btn btn-secondary btn-sm"> <i class="fa fa-filter"> </i>Add condition</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit"> <i class="fa fa-save"> </i> Save and update</button>
+        }
+
+    </div>
+</div>
+<hr>
+<button class="btn btn-secondary float-right"> Download </button>
+<h4>
+    XXX
+    <smallresults>based on query </smallresults>
+</h4>
+<div>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" style="width:100%;" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Address</th>
+                    <th>Postcode</th>
+                    <th>City</th>
+                    <th>Phone</th>
+                    <th>Mobile</th>
+                </tr>
+            </thead>
+            @*  <tfoot>
+
+                </tfoot>*@
+            <tbody>
+                @foreach (var item in Model.profileModel)
+                {
+                    <tr id="row_@item.Id">
+                        <td>@item.Email</td>
+                        <td>@item.Firstname</td>
+                        <td>@item.Lastname</td>
+                        <td>@item.Address</td>
+                        <td>@item.Postcode</td>
+                        <td>@item.City</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Mobile</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

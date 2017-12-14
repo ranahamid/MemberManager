@@ -1,0 +1,706 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MemberManagerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="250" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ProfileID" Type="nvarchar" MaxLength="50" />
+          <Property Name="SegmentID" Type="int" />
+          <Property Name="OptIn" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MemberManager.dbo.MemberImportLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MemberImportLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="UpdatedMembers" Type="int" />
+          <Property Name="Message" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MemberManager.dbo.MemberLastImportLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MemberLastImportLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Message" Type="text" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MemberManager.dbo.Profiles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Profiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="320" />
+          <Property Name="MailUpID" Type="nvarchar" MaxLength="50" />
+          <Property Name="OptIn" Type="bit" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="Created" Type="date" />
+          <Property Name="Updated" Type="date" />
+          <Property Name="ExternalId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Firstname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="150" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="150" />
+          <Property Name="Postcode" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="CVRnummer" Type="nvarchar" MaxLength="50" />
+          <Property Name="BrugerID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Medlemsstatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="Foreningsnummer" Type="nvarchar" MaxLength="50" />
+          <Property Name="Foedselsaar" Type="nvarchar" MaxLength="50" />
+          <Property Name="HektarDrevet" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalAndetKvaeg" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalAmmekoeer" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntaMalkekoeer" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalSlagtesvin" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalSoeer" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalAarssoeer" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalPelsdyr" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalHoens" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalKyllinger" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ecology" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sektion_SSJ" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftform_planteavl" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftform_Koed_Koer" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftform_Mælk" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftform_Svin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftform_Pelsdyr" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftform_Aeg_Kylling" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftstoerrelse_Planteavl" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftstoerrelse_Koed_Koer" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftfstoerrelse_Mælk" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftstoerrelse_Svin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftstoerrelse_Pelsdyr" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driftstoerrelse_Aeg_Kylling" Type="nvarchar" MaxLength="50" />
+          <Property Name="AntalSlagtekvaeg" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Segments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Query" Type="nvarchar" MaxLength="1500" />
+          <Property Name="MailUpGroupID" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MemberManagerModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Segments" EntityType="Self.Segments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MemberImportLog" EntityType="Self.MemberImportLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MemberImportLog].[id] AS [id], 
+    [MemberImportLog].[Date] AS [Date], 
+    [MemberImportLog].[UpdatedMembers] AS [UpdatedMembers], 
+    [MemberImportLog].[Message] AS [Message]
+    FROM [dbo].[MemberImportLog] AS [MemberImportLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MemberLastImportLog" EntityType="Self.MemberLastImportLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MemberLastImportLog].[id] AS [id], 
+    [MemberLastImportLog].[Date] AS [Date], 
+    [MemberLastImportLog].[Message] AS [Message]
+    FROM [dbo].[MemberLastImportLog] AS [MemberLastImportLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Profiles" EntityType="Self.Profiles" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Profiles].[Id] AS [Id], 
+    [Profiles].[Email] AS [Email], 
+    [Profiles].[MailUpID] AS [MailUpID], 
+    [Profiles].[OptIn] AS [OptIn], 
+    [Profiles].[Deleted] AS [Deleted], 
+    [Profiles].[Created] AS [Created], 
+    [Profiles].[Updated] AS [Updated], 
+    [Profiles].[ExternalId] AS [ExternalId], 
+    [Profiles].[Firstname] AS [Firstname], 
+    [Profiles].[Lastname] AS [Lastname], 
+    [Profiles].[Address] AS [Address], 
+    [Profiles].[Address2] AS [Address2], 
+    [Profiles].[Postcode] AS [Postcode], 
+    [Profiles].[City] AS [City], 
+    [Profiles].[Country] AS [Country], 
+    [Profiles].[Phone] AS [Phone], 
+    [Profiles].[Mobile] AS [Mobile], 
+    [Profiles].[CVRnummer] AS [CVRnummer], 
+    [Profiles].[BrugerID] AS [BrugerID], 
+    [Profiles].[Medlemsstatus] AS [Medlemsstatus], 
+    [Profiles].[Foreningsnummer] AS [Foreningsnummer], 
+    [Profiles].[Foedselsaar] AS [Foedselsaar], 
+    [Profiles].[HektarDrevet] AS [HektarDrevet], 
+    [Profiles].[AntalAndetKvaeg] AS [AntalAndetKvaeg], 
+    [Profiles].[AntalAmmekoeer] AS [AntalAmmekoeer], 
+    [Profiles].[AntaMalkekoeer] AS [AntaMalkekoeer], 
+    [Profiles].[AntalSlagtesvin] AS [AntalSlagtesvin], 
+    [Profiles].[AntalSoeer] AS [AntalSoeer], 
+    [Profiles].[AntalAarssoeer] AS [AntalAarssoeer], 
+    [Profiles].[AntalPelsdyr] AS [AntalPelsdyr], 
+    [Profiles].[AntalHoens] AS [AntalHoens], 
+    [Profiles].[AntalKyllinger] AS [AntalKyllinger], 
+    [Profiles].[Ecology] AS [Ecology], 
+    [Profiles].[Sektion_SSJ] AS [Sektion_SSJ], 
+    [Profiles].[Driftform_planteavl] AS [Driftform_planteavl], 
+    [Profiles].[Driftform_Koed_Koer] AS [Driftform_Koed_Koer], 
+    [Profiles].[Driftform_Mælk] AS [Driftform_Mælk], 
+    [Profiles].[Driftform_Svin] AS [Driftform_Svin], 
+    [Profiles].[Driftform_Pelsdyr] AS [Driftform_Pelsdyr], 
+    [Profiles].[Driftform_Aeg_Kylling] AS [Driftform_Aeg_Kylling], 
+    [Profiles].[Driftstoerrelse_Planteavl] AS [Driftstoerrelse_Planteavl], 
+    [Profiles].[Driftstoerrelse_Koed_Koer] AS [Driftstoerrelse_Koed_Koer], 
+    [Profiles].[Driftfstoerrelse_Mælk] AS [Driftfstoerrelse_Mælk], 
+    [Profiles].[Driftstoerrelse_Svin] AS [Driftstoerrelse_Svin], 
+    [Profiles].[Driftstoerrelse_Pelsdyr] AS [Driftstoerrelse_Pelsdyr], 
+    [Profiles].[Driftstoerrelse_Aeg_Kylling] AS [Driftstoerrelse_Aeg_Kylling], 
+    [Profiles].[AntalSlagtekvaeg] AS [AntalSlagtekvaeg]
+    FROM [dbo].[Profiles] AS [Profiles]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MemberManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MemberManagerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="MemberManagerModel.C__MigrationHistory" />
+          <EntitySet Name="AspNetRoles" EntityType="MemberManagerModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="MemberManagerModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="MemberManagerModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="MemberManagerModel.AspNetUser" />
+          <EntitySet Name="Groups" EntityType="MemberManagerModel.Group" />
+          <EntitySet Name="Segments" EntityType="MemberManagerModel.Segment" />
+          <EntitySet Name="MemberImportLogs" EntityType="MemberManagerModel.MemberImportLog" />
+          <EntitySet Name="MemberLastImportLogs" EntityType="MemberManagerModel.MemberLastImportLog" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="MemberManagerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="MemberManagerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="MemberManagerModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Profiles" EntityType="MemberManagerModel.Profile" />
+        </EntityContainer>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="MemberManagerModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="MemberManagerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="MemberManagerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="MemberManagerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="MemberManagerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="AspNetRoles" Relationship="MemberManagerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ProfileID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SegmentID" Type="Int32" />
+          <Property Name="OptIn" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Segment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Query" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+          <Property Name="MailUpGroupID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MemberImportLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="UpdatedMembers" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MemberLastImportLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="MemberManagerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MemberManagerModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="MemberManagerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MemberManagerModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="MemberManagerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="MemberManagerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="320" FixedLength="false" Unicode="true" />
+          <Property Name="MailUpID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OptIn" Type="Boolean" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="0" />
+          <Property Name="Updated" Type="DateTime" Precision="0" />
+          <Property Name="ExternalId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CVRnummer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BrugerID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Medlemsstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Foreningsnummer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Foedselsaar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HektarDrevet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalAndetKvaeg" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalAmmekoeer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntaMalkekoeer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalSlagtesvin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalSoeer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalAarssoeer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalPelsdyr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalHoens" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalKyllinger" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ecology" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sektion_SSJ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftform_planteavl" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftform_Koed_Koer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftform_Mælk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftform_Svin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftform_Pelsdyr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftform_Aeg_Kylling" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftstoerrelse_Planteavl" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftstoerrelse_Koed_Koer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftfstoerrelse_Mælk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftstoerrelse_Svin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftstoerrelse_Pelsdyr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driftstoerrelse_Aeg_Kylling" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AntalSlagtekvaeg" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MemberManagerModelStoreContainer" CdmEntityContainer="MemberManagerEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="MemberManagerModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="MemberManagerModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="MemberManagerModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="MemberManagerModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="MemberManagerModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="MemberManagerModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="OptIn" ColumnName="OptIn" />
+                <ScalarProperty Name="SegmentID" ColumnName="SegmentID" />
+                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Segments">
+            <EntityTypeMapping TypeName="MemberManagerModel.Segment">
+              <MappingFragment StoreEntitySet="Segments">
+                <ScalarProperty Name="MailUpGroupID" ColumnName="MailUpGroupID" />
+                <ScalarProperty Name="Query" ColumnName="Query" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberImportLogs">
+            <EntityTypeMapping TypeName="MemberManagerModel.MemberImportLog">
+              <MappingFragment StoreEntitySet="MemberImportLog">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="UpdatedMembers" ColumnName="UpdatedMembers" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberLastImportLogs">
+            <EntityTypeMapping TypeName="MemberManagerModel.MemberLastImportLog">
+              <MappingFragment StoreEntitySet="MemberLastImportLog">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="MemberManagerModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="MemberManagerModel.Profile">
+              <MappingFragment StoreEntitySet="Profiles">
+                <ScalarProperty Name="AntalSlagtekvaeg" ColumnName="AntalSlagtekvaeg" />
+                <ScalarProperty Name="Driftstoerrelse_Aeg_Kylling" ColumnName="Driftstoerrelse_Aeg_Kylling" />
+                <ScalarProperty Name="Driftstoerrelse_Pelsdyr" ColumnName="Driftstoerrelse_Pelsdyr" />
+                <ScalarProperty Name="Driftstoerrelse_Svin" ColumnName="Driftstoerrelse_Svin" />
+                <ScalarProperty Name="Driftfstoerrelse_Mælk" ColumnName="Driftfstoerrelse_Mælk" />
+                <ScalarProperty Name="Driftstoerrelse_Koed_Koer" ColumnName="Driftstoerrelse_Koed_Koer" />
+                <ScalarProperty Name="Driftstoerrelse_Planteavl" ColumnName="Driftstoerrelse_Planteavl" />
+                <ScalarProperty Name="Driftform_Aeg_Kylling" ColumnName="Driftform_Aeg_Kylling" />
+                <ScalarProperty Name="Driftform_Pelsdyr" ColumnName="Driftform_Pelsdyr" />
+                <ScalarProperty Name="Driftform_Svin" ColumnName="Driftform_Svin" />
+                <ScalarProperty Name="Driftform_Mælk" ColumnName="Driftform_Mælk" />
+                <ScalarProperty Name="Driftform_Koed_Koer" ColumnName="Driftform_Koed_Koer" />
+                <ScalarProperty Name="Driftform_planteavl" ColumnName="Driftform_planteavl" />
+                <ScalarProperty Name="Sektion_SSJ" ColumnName="Sektion_SSJ" />
+                <ScalarProperty Name="Ecology" ColumnName="Ecology" />
+                <ScalarProperty Name="AntalKyllinger" ColumnName="AntalKyllinger" />
+                <ScalarProperty Name="AntalHoens" ColumnName="AntalHoens" />
+                <ScalarProperty Name="AntalPelsdyr" ColumnName="AntalPelsdyr" />
+                <ScalarProperty Name="AntalAarssoeer" ColumnName="AntalAarssoeer" />
+                <ScalarProperty Name="AntalSoeer" ColumnName="AntalSoeer" />
+                <ScalarProperty Name="AntalSlagtesvin" ColumnName="AntalSlagtesvin" />
+                <ScalarProperty Name="AntaMalkekoeer" ColumnName="AntaMalkekoeer" />
+                <ScalarProperty Name="AntalAmmekoeer" ColumnName="AntalAmmekoeer" />
+                <ScalarProperty Name="AntalAndetKvaeg" ColumnName="AntalAndetKvaeg" />
+                <ScalarProperty Name="HektarDrevet" ColumnName="HektarDrevet" />
+                <ScalarProperty Name="Foedselsaar" ColumnName="Foedselsaar" />
+                <ScalarProperty Name="Foreningsnummer" ColumnName="Foreningsnummer" />
+                <ScalarProperty Name="Medlemsstatus" ColumnName="Medlemsstatus" />
+                <ScalarProperty Name="BrugerID" ColumnName="BrugerID" />
+                <ScalarProperty Name="CVRnummer" ColumnName="CVRnummer" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="ExternalId" ColumnName="ExternalId" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="OptIn" ColumnName="OptIn" />
+                <ScalarProperty Name="MailUpID" ColumnName="MailUpID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

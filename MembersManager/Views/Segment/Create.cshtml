@@ -1,0 +1,21 @@
+﻿@model MembersManager.Models.SegmentViewModels
+
+@{
+    ViewBag.Title = "Create new segment";
+}
+
+<div class="card card-login mx-auto mt-5">
+    <div class="card-header">Create new segment</div>
+    @using (Html.BeginForm("Create", "Segment", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x=>x.Id)
+        <div class="card-body">
+            <div class="form-group">
+                <label for="segmentName">Name</label>
+                <input class="form-control" id="Name" name="Name" type="text" placeholder="Enter segment name">
+            </div>
+            <input type="submit" class="btn btn-primary btn-block" value="Save" />
+        </div>
+    }
+</div>
