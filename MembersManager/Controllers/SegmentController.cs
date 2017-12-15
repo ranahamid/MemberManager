@@ -28,86 +28,217 @@ namespace MembersManager.Controllers
 
 
             ProfileViewModel profileViewModel = new ProfileViewModel();
+            
+            //profileViewModel.profileModel = GetAllProfileMembers();
 
-            profileViewModel.profileModel = GetAllProfileMembers();
+            List<MembersManager.Models.Entities.Profile> profile = new List<Profile>();
+            profile = mm.Profiles.SqlQuery("Select TOP 500 * from Profiles order by Id").ToList();
+            profileViewModel.ProfileData = profile;
+
+
             profileViewModel.AllColumnSelectList = GetAllProfileSelectList();
             profileViewModel.AllFilterSelectList = GetAllFilterSelectList();
             return View(profileViewModel);
         }
 
         [HttpPost]
-        public ActionResult Index(string SelectColumn, string SelectFilter, string SearchTerm)
+        public ActionResult Index(ProfileViewModel model/*string SelectColumn, string SelectFilter, string SearchTerm*/)
         {
 
             ProfileViewModel profileViewModel = new ProfileViewModel();
+        
+            profileViewModel.ProfileData = GetSearchProfileMembers(model.SelectColumn, model.SelectFilter, model.SearchTerm);
+            //end list
 
-            profileViewModel.profileModel = GetAllProfileMembers();
             profileViewModel.AllColumnSelectList = GetAllProfileSelectList();
             profileViewModel.AllFilterSelectList = GetAllFilterSelectList();
 
             return View(profileViewModel);
         }
 
-        public List<ProfileModel> GetAllProfileMembers()
+        public List<MembersManager.Models.Entities.Profile> GetSearchProfileMembers(string SelectColumn, string SelectFilter, string SearchTerm)
         {
-            var profiles = mm.Profiles.Select(x => new ProfileModel()
-            {
-                Id = x.Id,
-                Email = x.Email,
-                MailUpID = x.MailUpID,
-                OptIn = x.OptIn,
-                Deleted = x.Deleted,
-                Created = x.Created,
-                Updated = x.Updated,
-                ExternalId = x.ExternalId,
-                Firstname = x.Firstname,
-                Lastname = x.Lastname,
-                Address = x.Address,
-                Address2 = x.Address2,
-                Postcode = x.Postcode,
-                City = x.City,
-                Country = x.Country,
-                Phone = x.Phone,
-                Mobile = x.Mobile,
-                CVRnummer = x.CVRnummer,
-                BrugerID = x.BrugerID,
-                Medlemsstatus = x.Medlemsstatus,
-                Foreningsnummer = x.Foreningsnummer,
-                Foedselsaar = x.Foedselsaar,
-                HektarDrevet = x.HektarDrevet,
-                AntalAndetKvaeg = x.AntalAndetKvaeg,
-                AntalAmmekoeer = x.AntalAmmekoeer,
-                AntaMalkekoeer = x.AntaMalkekoeer,
-                AntalSlagtesvin = x.AntalSlagtesvin,
-                AntalSoeer = x.AntalSoeer,
-                AntalAarssoeer = x.AntalAarssoeer,
-                AntalPelsdyr = x.AntalPelsdyr,
-                AntalHoens = x.AntalHoens,
-                AntalKyllinger = x.AntalKyllinger,
-                Ecology = x.Ecology,
-                Sektion_SSJ = x.Sektion_SSJ,
-                Driftform_planteavl = x.Driftform_planteavl,
-                Driftform_Koed_Koer = x.Driftform_Koed_Koer,
-                Driftform_Mælk = x.Driftform_Mælk,
-                Driftform_Svin = x.Driftform_Svin,
-                Driftform_Pelsdyr = x.Driftform_Pelsdyr,
-                Driftform_Aeg_Kylling = x.Driftform_Aeg_Kylling,
-                Driftstoerrelse_Planteavl = x.Driftstoerrelse_Planteavl,
-                Driftstoerrelse_Koed_Koer = x.Driftstoerrelse_Koed_Koer,
-                Driftfstoerrelse_Mælk = x.Driftfstoerrelse_Mælk,
-                Driftstoerrelse_Svin = x.Driftstoerrelse_Svin,
-                Driftstoerrelse_Pelsdyr = x.Driftstoerrelse_Pelsdyr,
-                Driftstoerrelse_Aeg_Kylling = x.Driftstoerrelse_Aeg_Kylling,
-                AntalSlagtekvaeg = x.AntalSlagtekvaeg,
-            }).OrderBy(x => x.Id).Take(500).ToList();
+            List<MembersManager.Models.Entities.Profile> list = new List<Profile>();
+            string firstQuery = "Select TOP 500 * from Profiles";
 
-            return profiles;
+            //Type t = typeof(Profile);
+
+            //foreach (var prop in t.GetProperties())
+            //{
+            //    dict.Add(new KeyValuePair<string, string>(prop.Name, prop.PropertyType.Name));
+            //}
+
+            //string dataType = string.Empty;
+            //foreach (KeyValuePair<string, string> item in dict)
+            //{
+            //    if (item.Key == SelectColumn)
+            //    {
+            //        dataType = item.Value;
+            //        break;
+            //    }
+            //}
+
+            string Query = string.Empty;
+
+            if (SelectFilter == "1")
+            {
+                //equal
+                Query = string.Format("{0} where {1} = '{2}' order by Id ", firstQuery, SelectColumn, SearchTerm);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else if (SelectFilter == "2")
+            {
+                //not equal
+                Query = string.Format("{0} where {1} != '{2}' order by Id ", firstQuery,SelectColumn, SearchTerm);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else if (SelectFilter == "3")
+            {
+                //in
+                string[] words = SearchTerm.Split(',');
+                string terms=string.Empty;
+                var index = 0;
+                foreach (string word in words)
+                {
+                    if (index > 0)
+                    {
+                        terms = terms + ",";                        
+                    }
+                    //sw.Write(itemChecked.ToString());
+                    index++;
+                    terms = terms+ string.Format("'{0}'",word);
+                }
+                // IN ('Germany', 'France', 'UK')
+                Query = string.Format("{0} where {1} IN ({2}) order by Id ", firstQuery, SelectColumn, terms);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else if (SelectFilter == "4")
+            {
+                //not in
+                string[] words = SearchTerm.Split(',');
+                string terms = string.Empty;
+                var index = 0;
+                foreach (string word in words)
+                {
+                    if (index > 0)
+                    {
+                        terms = terms + ",";
+                    }
+                    //sw.Write(itemChecked.ToString());
+                    index++;
+                    terms = terms + string.Format("'{0}'", word);
+                }
+                // IN ('Germany', 'France', 'UK')
+                Query = string.Format("{0} where {1} NOT IN ({2}) order by Id ", firstQuery, SelectColumn, terms);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else if (SelectFilter == "5")
+            {
+                //less
+                Query = string.Format("{0} where {1} < '{2}' order by Id ", firstQuery, SelectColumn, SearchTerm);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else if (SelectFilter == "6")
+            {
+                //less or equal
+                Query = string.Format("{0} where {1} <= '{2}' order by Id ", firstQuery, SelectColumn, SearchTerm);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+            else if (SelectFilter == "7")
+            {
+                //greater
+                Query = string.Format("{0} where {1} > '{2}' order by Id ", firstQuery, SelectColumn, SearchTerm);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+            else if (SelectFilter == "8")
+            {
+                //greater or equal
+                Query = string.Format("{0} where {1} >= '{2}' order by Id ", firstQuery, SelectColumn, SearchTerm);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else if (SelectFilter == "9")
+            {
+                //between
+                //WHERE column_name BETWEEN value1 AND value2;
+
+                string[] words = SearchTerm.Split(',');       
+                string term1 = (words[0] !=null) ? words[0] : string.Empty;
+                string term2 = (words[1] != null) ? words[1] : string.Empty;
+              
+                Query = string.Format("{0} where {1} BETWEEN '{2}' AND '{3}' order by Id ", firstQuery, SelectColumn, term1,term2);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+            else if (SelectFilter == "10")
+            {
+                //not between
+                //WHERE column_name BETWEEN value1 AND value2;
+
+                string[] words = SearchTerm.Split(',');
+                string term1 = (words[0] != null) ? words[0] : string.Empty;
+                string term2 = (words[1] != null) ? words[1] : string.Empty;
+
+                Query = string.Format("{0} where {1} NOT BETWEEN '{2}' AND '{3}' order by Id ", firstQuery, SelectColumn, term1, term2);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+            else if (SelectFilter == "11")
+            {
+                //greater or equal
+                Query = string.Format("{0} where {1} IS  NULL  order by Id ", firstQuery, SelectColumn);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+            else if (SelectFilter == "12")
+            {
+                //greater or equal
+                Query = string.Format("{0} where {1} IS NOT NULL order by Id ", firstQuery, SelectColumn);
+                list = mm.Profiles.SqlQuery(Query).ToList();
+            }
+
+            else
+            {
+                list= mm.Profiles.SqlQuery("{0} order by Id").ToList(); 
+            }
+
+            //insert query to db
+            if(Query!=string.Empty)
+            {
+                //db add
+                MembersManager.Models.Entities.Segment segment = new Segment()
+                {
+                    Name            = null,
+                    Query           = Query,
+                    MailUpGroupID   = null,
+                };
+                try
+                {
+                    mm.Segments.Add(segment);
+                    mm.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                   var error= e.ToString();
+                }
+               
+            }
+            //end
+            return list;
         }
+              
+
+        IDictionary<string, string> dict = new Dictionary<string, string>();
 
         public List<SelectListItem> GetAllProfileSelectList()
         {
             List<SelectListItem> entities = new List<SelectListItem>();
 
+
+
+            //get all column name
             var columnNames = typeof(Profile).GetProperties().Select(property => property.Name).ToArray();
 
             //var query = (from x in mm.Profiles
@@ -131,7 +262,7 @@ namespace MembersManager.Controllers
         public List<SelectListItem> GetAllFilterSelectList()
         {
             List<SelectListItem> entities = new List<SelectListItem>();
-            
+
             entities.Add(new SelectListItem() { Text = "equal", Value = "1" });
             entities.Add(new SelectListItem() { Text = "not equal", Value = "2" });
             entities.Add(new SelectListItem() { Text = "in", Value = "3" });
@@ -143,8 +274,7 @@ namespace MembersManager.Controllers
             entities.Add(new SelectListItem() { Text = "between", Value = "9" });
             entities.Add(new SelectListItem() { Text = "not between", Value = "10" });
             entities.Add(new SelectListItem() { Text = "is null", Value = "11" });
-            entities.Add(new SelectListItem() { Text = "is not null", Value = "12" });
-
+            entities.Add(new SelectListItem() { Text = "is not null", Value = "12" });        
 
             return entities;
         }

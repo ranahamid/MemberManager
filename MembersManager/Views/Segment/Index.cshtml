@@ -13,13 +13,13 @@
             <div class="form-group">
                 <div class="form-row">
                     <div class="col-md-4">
-                        @Html.DropDownListFor(m => Model.SelectColumn, Model.AllColumnSelectList, "---Choose Column---", new { @class = "form-control form-control-sm" })
+                        @Html.DropDownListFor(m => Model.SelectColumn, Model.AllColumnSelectList, "---Choose Column---", new {  @class = "form-control form-control-sm" })
                     </div>
                     <div class="col-md-4">                         
-                        @Html.DropDownListFor(m => Model.SelectFilter, Model.AllFilterSelectList, "---Choose Operator---", new { @class = "form-control form-control-sm" })
+                        @Html.DropDownListFor(m => Model.SelectFilter, Model.AllFilterSelectList, "---Choose Operator---", new { @id = "operatorid", @class = "form-control form-control-sm", @onchange = "checkoperatorchange()" })
                     </div>
                     <div class="col-md-4">
-                        <input class="form-control form-control-sm" id="SearchTerm" name="SearchTerm" type="text" aria-describedby="nameHelp" placeholder="" />
+                        @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control form-control-sm" })                      
                     </div>
                 </div>
             </div>
@@ -28,7 +28,12 @@
                     <div class="col-md-4">
                         <button class="btn btn-secondary btn-sm"> <i class="fa fa-filter"> </i>Add condition</button>
                     </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <span id="serachoption"></span>
+                    </div>
                 </div>
+               
             </div>
             <button class="btn btn-primary" type="submit"> <i class="fa fa-save"> </i> Save and update</button>
         }
@@ -46,6 +51,7 @@
         <table class="table table-bordered" id="dataTable" style="width:100%;" cellspacing="0">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Email</th>
                     <th>Firstname</th>
                     <th>Lastname</th>
@@ -60,9 +66,11 @@
 
                 </tfoot>*@
             <tbody>
-                @foreach (var item in Model.profileModel)
+                @foreach (var item in Model.ProfileData)
                 {
                     <tr id="row_@item.Id">
+
+                        <td>@item.Id</td>
                         <td>@item.Email</td>
                         <td>@item.Firstname</td>
                         <td>@item.Lastname</td>
@@ -78,3 +86,34 @@
     </div>
 </div>
 
+<script>
+    
+    function checkcolumnchange()
+    {
+        var colmn = $('#columnid :selected').val();
+    }
+
+    function checkoperatorchange()
+    {
+        var opert = $('#operatorid :selected').val();
+     
+        if (opert == "11" || opert== "12" )
+        {
+            $('#SearchTerm').attr('disabled', true);         
+        }
+        else
+        {
+            $('#SearchTerm').removeAttr('disabled');
+        }
+
+        //
+        if (opert == "3" || opert == "4" || opert == "9" || opert == "10")
+        {
+            $('#serachoption').text("Enter the values separated by"+"," +"(comma)");
+        }
+        else
+        {
+            $('#serachoption').text("");
+        }
+    }
+</script>
